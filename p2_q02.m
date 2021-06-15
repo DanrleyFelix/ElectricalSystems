@@ -13,7 +13,7 @@ clc
 M = 1000000;
 k = 1000;
 c = 3^(1/2);
-lag = p2r([1 30],true);
+lead = p2r([1 30],true);
 alf = p2r([c -30],true);
 a = p2r([1 120],true);
 
@@ -107,7 +107,7 @@ Ipu = Im1_pu+Im2_pu+Im3_pu;
 % Correntes reais
 
 Ibase = sbase/(c*vt2_base);
-Ia = Ipu*Ibase*lag;
+Ia = Ipu*Ibase*lead;
 Ib = Ia*a*a;
 Ic = Ia*a;
 
@@ -133,9 +133,9 @@ Idt1c_mod_fase = r2p(Idt1c,true)
 % Tensões em cada barra em PU
 
 v4pu = vnm/vt3_base;
-v3pu = (Ipu*jxt2_pu+v4pu)/lag;
-v2pu = ((Ipu*zlt_pu/lag)+v3pu);
-v1pu = ((Ipu*jxt1_pu/lag)+v2pu)*lag;
+v3pu = (Ipu*jxt2_pu+v4pu)/lead;
+v2pu = ((Ipu*zlt_pu/lead)+v3pu);
+v1pu = ((Ipu*jxt1_pu/lead)+v2pu)*lead;
 
 % Tensões internas no gerador em PU
 
