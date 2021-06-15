@@ -12,28 +12,23 @@ clc
 
 M = 1000000;
 k = 1000;
-c = 3^(1/2);
-lag = p2r([1 30],true);
-alf = p2r([c -30],true);
 a = p2r([1 120],true);
 T = [1 1 1; 1 a*a a; 1 a a*a];
+T_inv = [1 1 1; 1 a a*a; 1 a*a a];
     
 %% Dados da questão
 
-% Tensões de linha e fase
-
-vab = 380;
-vbc = 380*a^2;
-vca = 380*a;
+queda = 0.03;
+v_linha = 380;
+v_fase = v_linha/sqrt(3);
+van = p2r([v_fase -30],true);
 vbn = 0;
-van = vab;
-vcn = -vbc;
+vcn = van*a;
 
 % Impedâncias
 
 zfio = 0.1+0.02i;
 zn = 0.5+0.1i;
-zcarga_pu = 0.3;
 
 % Motor monofásico A
 
@@ -41,14 +36,14 @@ p1a = 8*k;
 fp1a = 0.6;
 o1a = acos(fp1a);
 s1a = p1a/fp1a;
-v1a = 220;
+v1a = 220*(1-queda);
 
 % Motor monofásico B
 
 s1b = 5*k;
 fp1b = 0.9;
 o1b = acos(fp1b);
-v1b = 220;
+v1b = 220*(1-queda);
 
 % Motor monofásico C
 
@@ -56,7 +51,7 @@ p1c = 6*k;
 fp1c = 0.75;
 o1c = acos(fp1c);
 s1c = p1c/fp1c;
-v1c = 220;
+v1c = 220*(1-queda);
 
 % Motor trifásico
 
@@ -64,7 +59,7 @@ p3 = 60*k;
 fp3 = 0.8;
 o3 = acos(fp3);
 s3 = p3/fp3;
-v3 = 380;
+v3 = 380*(1-queda);
 
 %% Calculando impedâncias e admitâncias
 
@@ -92,10 +87,45 @@ zc = 1/yc;
 
 %% Componentes simétricas
 
+% Tensões
+
+van012 = (T^-1)*[van; vbn; vcn];
+
+% Impedâncias
+
+z0_linha = zfio;
 z0 = (za+zb+zc)/3;
 z1 = (za+a*zb+a*a*zc)/3;
 z2 = (za+a*a*zb+a*zc)/3;
 
-matriz_z = [z0 z2 z1; z1 z0 z2; z2 z1 z0];
+% Solução das equações no formato matricial
 
+matriz_z = [z0+z0_linha+3*zn z2 z1; z1 z0+z0_linha z2; z2 z1 z0+z0_linha];
+x = (matriz_z^(-1))*van012; % componentes simétricas
+x2 = T*x; % correntes reais
+In = 3*x(1); % corrente no fio neutro
 
+%% a) Componentes simétricas das correntes nos fios durante o defeito
+
+fprintf("(a) Componentes simétricas das correntes nos fios:\n")
+Ia0 = r2p(x(1),true)
+Ia1 = r2p(x(2),true)
+Ia2 = r2p(x(3),true)
+
+%% b) As correntes reais nas fases do circuito trifásico durante o defeito
+
+fprintf("(b) As correntes reais nas fases:\n")
+Ia = r2p(x2(1),true)
+Ib = r2p(x2(2),true)
+Ic = r2p(x2(3),true)
+
+%% c) Corrente no fio neutro durante o defeito
+
+fprintf("(c) A corrente no fio neutro:\n")
+IN = r2p(In,true)
+
+%% d) A perda elétrica em cada fase (A, B e C) da instalação durante o defeito
+fprintf("(d) A perda elétrica em cada fase:\n")
+Perda_A = real(zfio)*(abs(x2(1)))^2
+Perda_B = real(zfio)*(abs(x2(2)))^2
+Perda_C = real(zfio)*(abs(x2(3)))^2
