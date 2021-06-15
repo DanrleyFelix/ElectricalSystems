@@ -4,6 +4,7 @@ clc
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Av2 - Sistemas Elétricos
 % Danrley Santos Felix
+% Aline Rafaela da silva costa
 % Questão 02
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

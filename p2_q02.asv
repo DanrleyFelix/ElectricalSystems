@@ -4,6 +4,7 @@ clc
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Av2 - Sistemas Elétricos
 % Danrley Santos Felix
+% Aline Rafaela da silva costa
 % Questão 02
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -136,7 +137,13 @@ v3pu = (Ipu*jxt2_pu+v4pu)/lag;
 v2pu = ((Ipu*zlt_pu/lag)+v3pu);
 v1pu = ((Ipu*jxt1_pu/lag)+v2pu)*lag;
 
-% Tensões in
-Ega = (Ipu*zg1_pu+v1pu);
+% Tensões internas no gerador em PU
 
+Ega = (Ipu*zg1_pu+v1pu);
+Egb = Ega*a^2;
+Egc = Ega*a;
+
+fprintf("(d) As tensões internas em pu do gerador reguladas:\n")
 Ega_mod_fase = r2p(Ega,true)
+Egb_mod_fase = r2p(Egb,true)
+Egc_mod_fase = r2p(Egc,true)
