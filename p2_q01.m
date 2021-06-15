@@ -14,7 +14,7 @@ M = 1000000;
 k = 1000;
 a = p2r([1 120],true);
 T = [1 1 1; 1 a*a a; 1 a a*a];
-T_inv = [1 1 1; 1 a a*a; 1 a*a a];
+T_inv = (1/3)*[1 1 1; 1 a a*a; 1 a*a a];
     
 %% Dados da questão
 
