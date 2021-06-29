@@ -104,6 +104,7 @@ s31 = v3*conj(i31)*sb
 s23 = v2*conj(i23)*sb
 s32 = v3*conj(i32)*sb
 
+s1 = s12+s13
 sl12 = s12+s21
 sl13 = s13+s31
 sl23 = s23+s32
