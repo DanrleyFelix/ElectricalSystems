@@ -70,18 +70,54 @@ end
 
 %% Letra a - Tensões nas barras
 
-fprintf("\nIterações para V2:\n")
+fprintf("\n(a) Iterações para as tensões na barra 2 e 3:\n")
 v2 = v2(1:stop_iter)
-fprintf("\nIterações para Vc3:\n")
-vc3 = vc3(1:stop_iter)
-fprintf("\nIterações para V3:\n")
+vc3 = vc3(1:stop_iter);
 v3 = v3(1:stop_iter)
 q3 = q3(1:stop_iter);
 s3_sch
 
 %% Letra b - Potência ativa e reativa na barra 1
 
+fprintf("\n(b)Potência ativa e reativa na barra 1:\n")
 s1_sch = conj(v1)*(v1*(y12+y13)-(y12*v2(stop_iter)+y13*v3(stop_iter)))
 p1_sch = real(s1_sch)*sb
 q1_sch = imag(s1_sch)*sb
+
+%% Letra c - Os fluxos de potência nas linhas
+
+fprintf("\n(c) Os fluxos de potência nas linhas:\n")
+v2 = v2(stop_iter);
+v3 = v3(stop_iter);
+
+i12 = y12*(v1-v2);
+i21 = -i12;
+i13 = y13*(v1-v3);
+i31 = -i13;
+i23 = y23*(v2-v3);
+i32 = -i23;
+
+s12 = v1*conj(i12)*sb
+s21 = v2*conj(i21)*sb
+s13 = v1*conj(i13)*sb
+s31 = v3*conj(i31)*sb
+s23 = v2*conj(i23)*sb
+s32 = v3*conj(i32)*sb
+
+sl12 = s12+s21
+sl13 = s13+s31
+sl23 = s23+s32
+
+%% Letra d - As perdas elétricas
+
+fprintf("\n(d) as perdas elétricas:\n")
+p12 = real(s12)
+p21 = real(s21)
+p13 = real(s13)
+p31 = real(s31)
+p23 = real(s23)
+p32 = real(s32)
+pl_12 = real(sl12)
+pl_13 = real(sl13)
+pl_23 = real(sl23)
 
